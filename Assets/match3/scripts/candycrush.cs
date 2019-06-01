@@ -22,6 +22,7 @@ public class candycrush : MonoBehaviour
     GameObject tile2 = null;
 
     public GameObject[] tile;
+    //tile pool resuable tile objects
     List<GameObject> tileBank = new List<GameObject>();
 
     static int rows = 9;
@@ -32,8 +33,10 @@ public class candycrush : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //every time game start the total numbers of tiles will be double of rows*cols
+        //put number of types of tiles*rows*cols
+        //in to tileBank for further use
         int numCopies = (rows * cols);
+        
         for (int i = 0; i < numCopies; i++)
         {
             for (int j = 0; j < tile.Length; j++)
@@ -45,7 +48,10 @@ public class candycrush : MonoBehaviour
                 tileBank.Add(o);
             }
         }
+
+        //upset tilebank
         ShuffleList();
+
         //initialise tile grid
         for (int r = 0; r < rows; r++)
         {
@@ -69,6 +75,7 @@ public class candycrush : MonoBehaviour
         }
     }
 
+    //break the order, randomize the tileBank
     void ShuffleList()
     {
         System.Random rand = new System.Random();
@@ -76,18 +83,19 @@ public class candycrush : MonoBehaviour
         while (r > 1)
         {
             r--;
+            //return a random number in range of max number
             int n = rand.Next(r + 1);
             GameObject val = tileBank[n];
+
             tileBank[n] = tileBank[r];
             tileBank[r] = val;
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         CheckGrid();
-        //this also works on mobile device
+        //GetMouseButton also works on mobile device
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay
@@ -124,19 +132,14 @@ public class candycrush : MonoBehaviour
                 if ((horzDist == 1 && vertDist == 0) ||
                 (horzDist == 0 && vertDist == 1))
                 {
-                    Tile temp = tiles[(int)tile1.transform.position.x,
-                        (int)tile1.transform.position.y];
-                    tiles[(int)tile1.transform.position.x,
-                        (int)tile1.transform.position.y] =
-                        tiles[(int)tile2.transform.position.x,
-                        (int)tile2.transform.position.y];
-                    tiles[(int)tile2.transform.position.x,
-                        (int)tile2.transform.position.y] = temp;
-                    Vector3 tempPos = tile1.transform.position;
-                    tile1.transform.position =
-                        tile2.transform.position;
-                    tile2.transform.position = tempPos;
+                    //disable tile1 and tile2 sprites
+                    tile1.GetComponent<SpriteRenderer>().enabled = false;
+                    tile2.GetComponent<SpriteRenderer>().enabled = false;
+                    //create two tile with out collider
 
+                    //swap animation for those new tiles with out collider
+                    StartCoroutine(SwapAnimation(tile1, tile2, 1));
+                    
                     tile1 = null;
                     tile2 = null;
                 }
@@ -150,6 +153,72 @@ public class candycrush : MonoBehaviour
 
         }
     }
+
+    //extract name form clone
+    string ExtractPrefix(GameObject obj)
+    {
+        string result = obj.name;
+        char[] ca = result.ToCharArray();
+        for(int i = 0; i < ca.Length; i++)
+        {
+            if (ca[i] == '(')
+            {
+                result = result.Substring(0, i);
+                //Debug.Log(result);
+            }
+        }
+        return result;
+    }
+
+
+    //swap animation
+    IEnumerator SwapAnimation(GameObject tile1,GameObject tile2,float duration)
+    {
+        //new visual tile1 and tile2
+        //need find tile1 position in Tile map
+        //name for tile1
+        string t1 = ExtractPrefix(tile1);
+        Transform t1t = tile1.transform;
+        GameObject fake1 = (GameObject)Instantiate(Resources.Load(t1),t1t);
+        string t2 = ExtractPrefix(tile2);
+        Transform t2t = tile2.transform;
+        GameObject fake2 = (GameObject)Instantiate(Resources.Load(t2),t2t);
+        
+        Vector2 initialPos1 = fake1.transform.position;
+        Vector2 initialPos2 = fake2.transform.position;
+
+        float percent = 0;
+        while (percent < 1)
+        {
+            percent += Time.deltaTime / duration;
+            fake1.transform.position = Vector2.Lerp(initialPos1, initialPos2,percent);
+            fake2.transform.position = Vector2.Lerp(initialPos2, initialPos1, percent);
+            yield return null;
+        }
+        Destroy(fake1);
+        Destroy(fake2);
+        fake1 = null;
+        fake2 = null;
+
+        //swap
+        Tile temp = tiles[(int)tile1.transform.position.x, (int)tile1.transform.position.y];
+
+        tiles[(int)tile1.transform.position.x, (int)tile1.transform.position.y] =
+            tiles[(int)tile2.transform.position.x, (int)tile2.transform.position.y];
+
+        tiles[(int)tile2.transform.position.x, (int)tile2.transform.position.y] = temp;
+
+        Vector3 tempPos = tile1.transform.position;
+
+        tile1.transform.position = tile2.transform.position;
+
+        tile2.transform.position = tempPos;
+
+        //enable tile1 and tile2 sprites
+        tile1.GetComponent<SpriteRenderer>().enabled = true;
+        tile2.GetComponent<SpriteRenderer>().enabled = true;
+    }
+
 
     void CheckGrid()
     {
