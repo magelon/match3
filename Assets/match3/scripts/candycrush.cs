@@ -178,11 +178,11 @@ public class candycrush : MonoBehaviour
         //need find tile1 position in Tile map
         //name for tile1
         string t1 = ExtractPrefix(tile1);
-        Transform t1t = tile1.transform;
-        GameObject fake1 = (GameObject)Instantiate(Resources.Load(t1),t1t);
+        Vector3 t1t = tile1.transform.position;
+        GameObject fake1 = (GameObject)Instantiate(Resources.Load(t1),t1t,Quaternion.identity);
         string t2 = ExtractPrefix(tile2);
-        Transform t2t = tile2.transform;
-        GameObject fake2 = (GameObject)Instantiate(Resources.Load(t2),t2t);
+        Vector3 t2t = tile2.transform.position;
+        GameObject fake2 = (GameObject)Instantiate(Resources.Load(t2),t2t,Quaternion.identity);
         
         Vector2 initialPos1 = fake1.transform.position;
         Vector2 initialPos2 = fake2.transform.position;
@@ -219,6 +219,28 @@ public class candycrush : MonoBehaviour
         tile2.GetComponent<SpriteRenderer>().enabled = true;
     }
 
+    //dispare animation
+    IEnumerator DispareAnimation(GameObject tileObj,int duration,int c,int i,int r)
+    {
+        tiles[c - i, r].tileObj.SetActive(false);
+        //new a same type tile and make it smaller as dispare animation
+        Vector3 tt = tileObj.transform.position;
+        string type = ExtractPrefix(tileObj);
+        GameObject fake = (GameObject)Instantiate(Resources.Load(type),tt,Quaternion.identity);
+
+        Vector3 endScale = new Vector3(0, 0, 0);
+        float percent = 0;
+        while (percent < 1)
+        {
+            percent += Time.deltaTime / duration;
+            fake.transform.localScale = Vector3.Lerp(fake.transform.localScale, endScale, percent);
+            yield return null;
+        }
+        Destroy(fake);
+        fake = null;
+        
+   
+    }
 
     void CheckGrid()
     {
@@ -249,9 +271,17 @@ public class candycrush : MonoBehaviour
                         {
                             if (tiles[c-i, r] != null)
                             {
-                                tiles[c - i, r].tileObj.SetActive(false);
+                                GameObject tmp = tiles[c - i, r].tileObj;
+                               
+                                //tiles[c - i, r].tileObj.SetActive(false);
+                                //play disapare animation
+                                //pass in c ,i,r
+                                
+                                StartCoroutine(DispareAnimation(tmp,1,c,i,r));
                             }
                             tiles[c - i, r] = null;
+                            //renewBoard at the end
+                           
                         }
                         /*
                         if (tiles[c, r] != null)
@@ -271,6 +301,7 @@ public class candycrush : MonoBehaviour
             }
         }
         //check in rows
+        /*
         for (int c = 0; c < cols; c++)
         {
             counter = 1;
@@ -302,6 +333,7 @@ public class candycrush : MonoBehaviour
                 }
             }
         }
+        */
         if (renewBoard)
         {
             RenewGrid();
