@@ -497,23 +497,35 @@ public class candycrush : MonoBehaviour
                     //drop down if space below is empty
                     if (tiles[c, r - 1] == null)
                     {
-
+                        //tiles[c, r].tileObj.GetComponent<SpriteRenderer>().enabled = false;
+                       
                         //start move this tile above null tile
                         tiles[c, r - 1] = tiles[c, r];
-                        tiles[c, r - 1].tileObj.transform.position
-                            = new Vector3(c, r - 1, 0);
+
+                        tiles[c, r - 1].tileObj.GetComponent<SpriteRenderer>().enabled = false;
+
+                        StartCoroutine(DropDownAnimation(c,r));
+
+                        //tiles[c, r - 1].tileObj.transform.position= new Vector3(c, r - 1, 0);
+
+                       
+
+
                         //show tiles
-                        tiles[c, r - 1].tileObj.GetComponent<SpriteRenderer>().enabled = true;
+                        //tiles[c, r - 1].tileObj.GetComponent<SpriteRenderer>().enabled = true;
                         tiles[c, r] = null;
+                        
                         //hide tiles going to move
                         //tiles[c, r].tileObj.GetComponent<SpriteRenderer>().enabled = false;
 
-                        //StartCoroutine(DropDownAnimation(c,r));
+                       
 
+                        
                         if (tiles[c, r] == null)
                         {
-                            anyMoved = true;
+                          //anyMoved = true;
                         }
+                        
                         
                     }
                 }
@@ -539,21 +551,34 @@ public class candycrush : MonoBehaviour
 
         float percent = 0;
         while (percent < 1)
-        {
-            percent += Time.deltaTime / 1;
+        {                               //drop down speed
+            percent += Time.deltaTime / 0.3f;
             fakeT.transform.position = Vector2.Lerp(tp, target, percent);
             yield return null;
         }
         Destroy(fakeT);
         fakeT = null;
+
+        if (tiles[c, r - 1] != null)
+        {
+            tiles[c, r - 1].tileObj.transform.position
+         = new Vector3(c, r - 1, 0);
+        }
+
+
+        /*
                         //start move this tile above null tile
         tiles[c, r - 1] = tiles[c, r];
-        tiles[c, r - 1].tileObj.transform.position
-            = new Vector3(c, r - 1, 0);
+       
         //show tiles
-        tiles[c, r-1].tileObj.GetComponent<SpriteRenderer>().enabled = true;
+        
+        tiles[c, r].tileObj.GetComponent<SpriteRenderer>().enabled = true;
         tiles[c, r] = null;
-
+        */
+        if (tiles[c, r - 1] != null)
+        {
+            tiles[c, r - 1].tileObj.GetComponent<SpriteRenderer>().enabled = true;
+        }
     }
 
 }
