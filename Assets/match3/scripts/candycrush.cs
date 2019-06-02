@@ -238,10 +238,22 @@ public class candycrush : MonoBehaviour
                         counter++;
                     }
                     else
-                        counter = 1;//reset counter
-                    //fi there are found remove 
-                    if (counter == 3)
                     {
+                        counter = 1;//reset counter
+                    }
+                       
+                    //if there are found remove 
+                    if (counter >= 3)
+                    {
+                        for(int i = 0; i < counter; i++)
+                        {
+                            if (tiles[c-i, r] != null)
+                            {
+                                tiles[c - i, r].tileObj.SetActive(false);
+                            }
+                            tiles[c - i, r] = null;
+                        }
+                        /*
                         if (tiles[c, r] != null)
                             tiles[c, r].tileObj.SetActive(false);
                         if (tiles[c - 1, r] != null)
@@ -251,6 +263,7 @@ public class candycrush : MonoBehaviour
                         tiles[c, r] = null;
                         tiles[c - 1, r] = null;
                         tiles[c - 2, r] = null;
+                        */
                         renewBoard = true;
 
                     }
