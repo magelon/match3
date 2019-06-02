@@ -222,7 +222,7 @@ public class candycrush : MonoBehaviour
     //dispare animation
     IEnumerator DispareAnimation(GameObject tileObj,int duration,int c,int i,int r)
     {
-        tiles[c - i, r].tileObj.SetActive(false);
+        
         //new a same type tile and make it smaller as dispare animation
         Vector3 tt = tileObj.transform.position;
         string type = ExtractPrefix(tileObj);
@@ -238,9 +238,14 @@ public class candycrush : MonoBehaviour
         }
         Destroy(fake);
         fake = null;
-        
-   
     }
+
+    IEnumerator RenewDely()
+    {
+        yield return new WaitForSeconds(1);
+        renewBoard = true;
+    }
+
 
     void CheckGrid()
     {
@@ -252,9 +257,11 @@ public class candycrush : MonoBehaviour
             counter = 1;
             for (int c = 1; c < cols; c++)
             {
+                //start check from second one in colums 
                 if (tiles[c, r] != null && tiles[c - 1, r] != null)
                 //if the tile exist
                 {
+                    //current one type is equals to previous one
                     if (tiles[c, r].type == tiles[c - 1, r].type)
                     {
                         counter++;
@@ -273,7 +280,7 @@ public class candycrush : MonoBehaviour
                             {
                                 GameObject tmp = tiles[c - i, r].tileObj;
                                
-                                //tiles[c - i, r].tileObj.SetActive(false);
+                                tiles[c - i, r].tileObj.SetActive(false);
                                 //play disapare animation
                                 //pass in c ,i,r
                                 
@@ -281,7 +288,7 @@ public class candycrush : MonoBehaviour
                             }
                             tiles[c - i, r] = null;
                             //renewBoard at the end
-                           
+                          
                         }
                         /*
                         if (tiles[c, r] != null)
@@ -294,14 +301,20 @@ public class candycrush : MonoBehaviour
                         tiles[c - 1, r] = null;
                         tiles[c - 2, r] = null;
                         */
-                        renewBoard = true;
+                        //renewBoard = true;
 
                     }
                 }
+                /*
+                if (r == rows - 1 && c == cols - 1)
+                {
+                    renewBoard = true;
+                }
+                */
             }
         }
         //check in rows
-        /*
+        
         for (int c = 0; c < cols; c++)
         {
             counter = 1;
@@ -316,24 +329,34 @@ public class candycrush : MonoBehaviour
                     }
                     else
                         counter = 1;
-                    if (counter == 3)
+                    if (counter >= 3)
                     {
-                        if (tiles[c, r] != null)
-                            tiles[c, r].tileObj.SetActive(false);
-                        if (tiles[c, r - 1] != null)
-                            tiles[c, r - 1].tileObj.SetActive(false);
-                        if (tiles[c, r - 2] != null)
-                            tiles[c, r - 2].tileObj.SetActive(false);
-                        tiles[c, r] = null;
-                        tiles[c, r - 1] = null;
-                        tiles[c, r - 2] = null;
-                        renewBoard = true;
+                         for(int i = 0; i < counter; i++)
+                        {
+                            if (tiles[c, r-i] != null)
+                            {
+                                GameObject tmp = tiles[c, r-i].tileObj;
+                               
+                                tiles[c, r-i].tileObj.SetActive(false);
+                                //play disapare animation
+                                //pass in c ,i,r
+                                
+                                StartCoroutine(DispareAnimation(tmp,1,c,i,r));
+                            }
+                            tiles[c, r-i] = null;
+                            //renewBoard at the end
+                          
+                        }
+                        //renewBoard = true;
                     }
 
                 }
             }
         }
-        */
+
+        //renew after a full board check
+        StartCoroutine(RenewDely());
+       
         if (renewBoard)
         {
             RenewGrid();
@@ -384,7 +407,7 @@ public class candycrush : MonoBehaviour
         }
         if (anyMoved)
         {
-            Invoke("RenewGrid", 0.5f);
+            Invoke("RenewGrid", 1f);
         }
     }
 }
