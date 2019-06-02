@@ -73,6 +73,9 @@ public class candycrush : MonoBehaviour
                 }
             }
         }
+
+        InvokeRepeating("CheckGrid", 0.5f,0.5f);
+
     }
 
     //break the order, randomize the tileBank
@@ -94,7 +97,8 @@ public class candycrush : MonoBehaviour
 
     void Update()
     {
-        CheckGrid();
+        //Invoke("CheckGrid", 1f);
+        //CheckGrid();
         //GetMouseButton also works on mobile device
         if (Input.GetMouseButtonDown(0))
         {
@@ -249,12 +253,20 @@ public class candycrush : MonoBehaviour
 
     void CheckGrid()
     {
-        int counter = 1;
+        int counterCol = 1;
+        int counterRow = 1;
+        int columMax = 0;
+        int columStart = 0;
+        int columStartR = 0;
+        int rowMax = 0;
+        int rowStart = 0;
+        int rowStartC = 0;
 
         //check in colums
         for (int r = 0; r < rows; r++)
         {
-            counter = 1;
+            counterCol = 1;
+           
             for (int c = 1; c < cols; c++)
             {
                 //start check from second one in colums 
@@ -264,13 +276,22 @@ public class candycrush : MonoBehaviour
                     //current one type is equals to previous one
                     if (tiles[c, r].type == tiles[c - 1, r].type)
                     {
-                        counter++;
+                        counterCol++;
+                        if (counterCol > columMax)
+                        {
+                            columMax = counterCol;
+                            columStart = c - 1;
+                            columStartR = r;
+                        }
+                           
+                        
                     }
                     else
                     {
-                        counter = 1;//reset counter
+                        counterCol = 1;//reset counter
                     }
                        
+                    /*
                     //if there are found remove 
                     if (counter >= 3)
                     {
@@ -300,10 +321,10 @@ public class candycrush : MonoBehaviour
                         tiles[c, r] = null;
                         tiles[c - 1, r] = null;
                         tiles[c - 2, r] = null;
-                        */
+                        
                         //renewBoard = true;
 
-                    }
+                    }*/
                 }
                 /*
                 if (r == rows - 1 && c == cols - 1)
@@ -313,11 +334,12 @@ public class candycrush : MonoBehaviour
                 */
             }
         }
+
         //check in rows
-        
+      
         for (int c = 0; c < cols; c++)
         {
-            counter = 1;
+            counterRow = 1;
             for (int r = 1; r < rows; r++)
             {
                 if (tiles[c, r] != null && tiles[c, r - 1] != null)
@@ -325,10 +347,20 @@ public class candycrush : MonoBehaviour
                 {
                     if (tiles[c, r].type == tiles[c, r - 1].type)
                     {
-                        counter++;
+                        counterRow++;
+                        if (counterRow > rowMax)
+                        {
+                            rowMax = counterRow;
+                            rowStart = r - 1;
+                            rowStartC = c;
+                        }
                     }
                     else
-                        counter = 1;
+                    {
+                        counterRow = 1;
+                    }
+                        
+                    /*
                     if (counter >= 3)
                     {
                          for(int i = 0; i < counter; i++)
@@ -349,14 +381,80 @@ public class candycrush : MonoBehaviour
                         }
                         //renewBoard = true;
                     }
+                    */
 
                 }
             }
         }
 
+
+        //cleaning board
+        //clean colums
+        if (columMax >= 3)
+        {
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 1; c < cols; c++)
+                {
+                    if (c - 1 == columStart)
+                    {
+                        for (int i = 0; i < columMax; i++)
+                        {
+                            if (tiles[c - i, columStartR] != null)
+                            {
+                                GameObject tmp = tiles[c - i, columStartR].tileObj;
+
+                                tiles[c - i, columStartR].tileObj.SetActive(false);
+                                //play disapare animation
+                                //pass in c ,i,r
+
+                                StartCoroutine(DispareAnimation(tmp, 1, c, i, columStartR));
+                            }
+                            tiles[c - i, columStartR] = null;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        //clean rows
+        if (rowMax >= 3)
+        {
+            for (int c = 0; c < cols; c++)
+            {
+                for (int r = 1; r < rows; r++)
+                {
+                    if (r - 1 == rowStart)
+                    {
+                        for (int i = 0; i < rowMax; i++)
+                        {
+                            if (tiles[rowStartC, r - i] != null)
+                            {
+                                GameObject tmp = tiles[rowStartC, r - i].tileObj;
+
+                                tiles[rowStartC, r - i].tileObj.SetActive(false);
+                                //play disapare animation
+                                //pass in c ,i,r
+
+                                StartCoroutine(DispareAnimation(tmp, 1, rowStartC, i, r));
+                            }
+                            tiles[rowStartC, r - i] = null;
+                        }
+                    }
+                }
+            }
+        }
+
+
         //renew after a full board check
-        StartCoroutine(RenewDely());
-       
+        //StartCoroutine(RenewDely());
+
+        if (rowMax < 3 && columMax < 3)
+        {
+            renewBoard = true;
+        }
+
         if (renewBoard)
         {
             RenewGrid();
@@ -372,10 +470,13 @@ public class candycrush : MonoBehaviour
         {
             for (int c = 0; c < cols; c++)
             {
+                //row count from bottom top 
+                //rows-1 is top row
                 if (r == rows - 1 && tiles[c, r] == null)
                 //if in the top row and no tile
                 {
                     Vector3 tilePos = new Vector3(c, r, 0);
+                    //fetch a nonactive tile from tile bank
                     for (int n = 0; n < tileBank.Count; n++)
                     {
                         GameObject o = tileBank[n];
@@ -396,11 +497,24 @@ public class candycrush : MonoBehaviour
                     //drop down if space below is empty
                     if (tiles[c, r - 1] == null)
                     {
+
+                        //start move this tile above null tile
                         tiles[c, r - 1] = tiles[c, r];
                         tiles[c, r - 1].tileObj.transform.position
                             = new Vector3(c, r - 1, 0);
+                        //show tiles
+                        tiles[c, r - 1].tileObj.GetComponent<SpriteRenderer>().enabled = true;
                         tiles[c, r] = null;
-                        anyMoved = true;
+                        //hide tiles going to move
+                        //tiles[c, r].tileObj.GetComponent<SpriteRenderer>().enabled = false;
+
+                        //StartCoroutine(DropDownAnimation(c,r));
+
+                        if (tiles[c, r] == null)
+                        {
+                            anyMoved = true;
+                        }
+                        
                     }
                 }
             }
@@ -410,4 +524,36 @@ public class candycrush : MonoBehaviour
             Invoke("RenewGrid", 1f);
         }
     }
+
+    IEnumerator DropDownAnimation(int c,int r)
+    {
+        //new fake tile for animation
+        //position of real tile
+        Vector2 tp = tiles[c, r].tileObj.transform.position;
+        //get tiles type from extractprefix
+        string tn = ExtractPrefix(tiles[c, r].tileObj);
+        //instantiate fake tile by name
+        GameObject fakeT =(GameObject) Instantiate(Resources.Load(tn), tp, Quaternion.identity);
+        //target position is one unit down 
+        Vector2 target = new Vector2(tp.x, tp.y - 1);
+
+        float percent = 0;
+        while (percent < 1)
+        {
+            percent += Time.deltaTime / 1;
+            fakeT.transform.position = Vector2.Lerp(tp, target, percent);
+            yield return null;
+        }
+        Destroy(fakeT);
+        fakeT = null;
+                        //start move this tile above null tile
+        tiles[c, r - 1] = tiles[c, r];
+        tiles[c, r - 1].tileObj.transform.position
+            = new Vector3(c, r - 1, 0);
+        //show tiles
+        tiles[c, r-1].tileObj.GetComponent<SpriteRenderer>().enabled = true;
+        tiles[c, r] = null;
+
+    }
+
 }
