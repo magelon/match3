@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 //Tile need a collider box 2d enable to respon to raycast
 //tiles must great than 5 has glitch during only test 3 tiles
 //laterly fixed by double the pool size of bank objects
@@ -17,6 +18,8 @@ public class Tile
 
 public class candycrush : MonoBehaviour
 {
+    public int score=0;
+    public Text scoreT;
     //2 tiles for swaping
     GameObject tile1 = null;
     GameObject tile2 = null;
@@ -97,6 +100,7 @@ public class candycrush : MonoBehaviour
 
     void Update()
     {
+        scoreT.text = score.ToString();
         //Invoke("CheckGrid", 1f);
         //CheckGrid();
         //GetMouseButton also works on mobile device
@@ -142,7 +146,7 @@ public class candycrush : MonoBehaviour
                     //create two tile with out collider
 
                     //swap animation for those new tiles with out collider
-                    StartCoroutine(SwapAnimation(tile1, tile2, 1));
+                    StartCoroutine(SwapAnimation(tile1, tile2, 0.5f));
                     
                     tile1 = null;
                     tile2 = null;
@@ -226,7 +230,6 @@ public class candycrush : MonoBehaviour
     //dispare animation
     IEnumerator DispareAnimation(GameObject tileObj,int duration,int c,int i,int r)
     {
-        
         //new a same type tile and make it smaller as dispare animation
         Vector3 tt = tileObj.transform.position;
         string type = ExtractPrefix(tileObj);
@@ -415,6 +418,7 @@ public class candycrush : MonoBehaviour
                     }
                 }
             }
+            score = score+2 * columMax;
         }
 
 
@@ -444,6 +448,7 @@ public class candycrush : MonoBehaviour
                     }
                 }
             }
+            score = score + 2 * rowMax;
         }
 
 
