@@ -230,6 +230,7 @@ public class candycrush : MonoBehaviour
     //dispare animation
     IEnumerator DispareAnimation(GameObject tileObj,int duration,int c,int i,int r)
     {
+        GameManager.getInstance().playSfx("crunch");
         //new a same type tile and make it smaller as dispare animation
         Vector3 tt = tileObj.transform.position;
         string type = ExtractPrefix(tileObj);
@@ -243,6 +244,7 @@ public class candycrush : MonoBehaviour
             fake.transform.localScale = Vector3.Lerp(fake.transform.localScale, endScale, percent);
             yield return null;
         }
+        
         Destroy(fake);
         fake = null;
     }

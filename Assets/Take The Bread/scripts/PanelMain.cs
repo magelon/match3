@@ -30,7 +30,6 @@ public class PanelMain : MonoBehaviour {
 				initView();
 		}
 
-		// Update is called once per frame
 		void Update () {
             Time.timeScale = 1;
 		}
@@ -45,7 +44,7 @@ public class PanelMain : MonoBehaviour {
 						GameManager.getInstance ().playSfx ("click");
                         ChangeScene("LevelMenu");
 
-                        fadeIn ("LevelMenu");
+                        //fadeIn ("LevelMenu");
 						break;
 				case "btnMore":
 						GameManager.getInstance().playSfx("click");
@@ -133,16 +132,18 @@ public class PanelMain : MonoBehaviour {
 
     private void ChangeScene(string s)
     {
+        
         StartCoroutine(LoadAsynchronously(s));
     }
 
     IEnumerator LoadAsynchronously(string s)
     {
+        Time.timeScale = 1;
         loadingImg.SetActive(true);
-        AsyncOperation operation = SceneManager.LoadSceneAsync(s);
-        while (!operation.isDone)
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(s);
+        while (!asyncLoad.isDone)
         {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            float progress = Mathf.Clamp01(asyncLoad.progress / 0.9f);
             sl.value = progress;
             yield return null;
         }

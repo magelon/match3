@@ -32,5 +32,6 @@ public class levelSystem : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         UpdateXp();
+        Time.timeScale = 1;
 	}
 }
