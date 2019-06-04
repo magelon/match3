@@ -401,7 +401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.5794409, b: 0.3915094, a: 1}
+  m_Color: {r: 0.9622642, g: 0.9152638, b: 0.89417946, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2193,7 +2193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9622642, g: 0.6473723, b: 0.45843717, a: 1}
+  m_Color: {r: 0.9433962, g: 0.92949003, b: 0.9211463, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3046,7 +3046,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.9056604, g: 0.6023496, b: 0.79447734, a: 1}
+  m_BackGroundColor: {r: 0.10588236, g: 0.6431373, b: 0.8862746, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -3112,7 +3112,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1503123047
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3148,7 +3148,7 @@ MonoBehaviour:
   statusText: {fileID: 2084022478}
   signButton: {fileID: 1503123046}
   start: {fileID: 1327706159}
-  webClientId: 898709977647-gdt56o86ja6k0ojve6lpo5mbovkijutc.apps.googleusercontent.com
+  webClientId: 481628943012-jrh4iq9m8k1ogrm4keg5jt601t2qr479.apps.googleusercontent.com
 --- !u!114 &1503123049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4166,7 +4166,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 59
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 3
@@ -4177,7 +4177,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Candy Crush
+  m_Text: Candy Crusha
 --- !u!222 &2084022479
 CanvasRenderer:
   m_ObjectHideFlags: 0

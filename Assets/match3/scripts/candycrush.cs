@@ -23,6 +23,7 @@ public class candycrush : MonoBehaviour
     //2 tiles for swaping
     GameObject tile1 = null;
     GameObject tile2 = null;
+     Camera mainC;
 
     public GameObject[] tile;
     //tile pool resuable tile objects
@@ -36,6 +37,12 @@ public class candycrush : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        mainC = Camera.main;
+        mainC.backgroundColor = new Color(
+                    Random.Range(0f, 1f),
+                    Random.Range(0f, 1f),
+                    Random.Range(0f, 1f)
+                );
         //put number of types of tiles*rows*cols
         //in to tileBank for further use
         int numCopies = (rows * cols);
