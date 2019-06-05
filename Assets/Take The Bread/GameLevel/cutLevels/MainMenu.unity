@@ -4177,7 +4177,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Candy Crusha
+  m_Text: ColorMatch3
 --- !u!222 &2084022479
 CanvasRenderer:
   m_ObjectHideFlags: 0
