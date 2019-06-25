@@ -37,12 +37,15 @@ public class candycrush : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        /*
         mainC = Camera.main;
         mainC.backgroundColor = new Color(
                     Random.Range(0f, 1f),
                     Random.Range(0f, 1f),
                     Random.Range(0f, 1f)
                 );
+        */
+
         //put number of types of tiles*rows*cols
         //in to tileBank for further use
         int numCopies = (rows * cols);
