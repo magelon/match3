@@ -66,7 +66,7 @@ public class rewardVideo : MonoBehaviour
     {
         
         #if UNITY_ANDROID
-                string adUnitId = "ca-app-pub-3308520213502941/1729710726";
+                string adUnitId = "ca-app-pub-3308520213502941/7468394583";
                 //demo id ca-app-pub-3940256099942544/5224354917;
         #elif UNITY_IPHONE
                 string adUnitId = "ca-app-pub-3940256099942544/1712485313";

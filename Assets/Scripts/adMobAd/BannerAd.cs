@@ -14,7 +14,7 @@ public class BannerAd : MonoBehaviour
         adFree = PlayerPrefs.GetInt("adFree");
 
 #if UNITY_ANDROID
-        string appId = "ca-app-pub-3308520213502941~5258602639";
+        string appId = "ca-app-pub-3308520213502941~8071686351";
         //working id ca-app-pub-3308520213502941~2993081735
 #elif UNITY_IPHONE
             string appId = "ca-app-pub-3940256099942544~1458002511";ca-app-pub-3940256099942544~3347511713
@@ -40,7 +40,7 @@ public class BannerAd : MonoBehaviour
     {
         
 #if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3308520213502941/4272824027";
+        string adUnitId = "ca-app-pub-3308520213502941/3553200303";
         //working id ca-app-pub-3308520213502941/3135610015 ca-app-pub-3940256099942544/6300978111
 #elif UNITY_IPHONE
             string adUnitId = "ca-app-pub-3940256099942544/2934735716";
