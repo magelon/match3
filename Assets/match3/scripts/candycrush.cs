@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//Tile need a collider box 2d enable to respon to raycast
+//Tile need a collider box 2d enable to respone to raycast
 //tiles must great than 5 has glitch during only test 3 tiles
 //laterly fixed by double the pool size of bank objects
 public class Tile
@@ -84,10 +84,11 @@ public class candycrush : MonoBehaviour
             }
         }
 
+        //update grid from start every 0.5 second 
         InvokeRepeating("CheckGrid", 0.5f,0.5f);
 
     }
-
+    //initiallize function
     //break the order, randomize the tileBank
     void ShuffleList()
     {
@@ -109,7 +110,7 @@ public class candycrush : MonoBehaviour
     {
         scoreT.text = score.ToString();
         //Invoke("CheckGrid", 1f);
-        //CheckGrid();
+        
         //GetMouseButton also works on mobile device
         if (Input.GetMouseButtonDown(0))
         {
@@ -506,6 +507,7 @@ public class candycrush : MonoBehaviour
                         }
                     }
                 }
+                
                 if (tiles[c, r] != null)
                 {
                     //drop down if space below is empty
@@ -542,6 +544,7 @@ public class candycrush : MonoBehaviour
                         
                         
                     }
+                  
                 }
             }
         }
