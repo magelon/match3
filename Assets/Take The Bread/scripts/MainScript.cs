@@ -502,7 +502,8 @@ public class MainScript : MonoBehaviour {
 
         public void nextLevelSkip()
     {
-        fadeIn("level" + (clevel + 1));
+        //fadeIn("level" + (clevel + 1));
+		fadeIn("level1");
     }
 
 		public void nextLevel(){
@@ -520,11 +521,13 @@ public class MainScript : MonoBehaviour {
         }
         else if(clevel%2==0&&intershowed)
         {
-            fadeIn("level" + (clevel + 1));
+            //fadeIn("level" + (clevel + 1));
+			fadeIn("level1");
         }
         else
         {
-            fadeIn("level" + (clevel + 1));
+            //fadeIn("level" + (clevel + 1));
+			fadeIn("level1");
         }
 
 

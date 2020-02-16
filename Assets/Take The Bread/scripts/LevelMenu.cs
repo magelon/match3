@@ -241,7 +241,8 @@ public class LevelMenu : MonoBehaviour {
 		void clickLevel(GameObject tbtn){
 				if (!isMoving) {
 						GameData.getInstance ().cLevel = int.Parse (tbtn.GetComponentInChildren<Text> ().text) - 1;
-						fadeIn (tbtn.name);
+						//fadeIn (tbtn.name);
+						fadeIn ("level1");
             GameManager.getInstance().playSfx("click");
         }
 
@@ -277,7 +278,8 @@ public class LevelMenu : MonoBehaviour {
             GameData.getInstance().cLevel = 1;
         }
 				string tstr = "level" + GameData.getInstance ().cLevel;
-				fadeIn (tstr);
+				//fadeIn (tstr);
+				fadeIn ("level1");
 
         GameManager.getInstance().playSfx("click");
     }
