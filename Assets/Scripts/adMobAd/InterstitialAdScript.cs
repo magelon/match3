@@ -86,6 +86,7 @@ private InterstitialAd interstitial;
     {
         string levelname = SceneManager.GetActiveScene().name;// Application.loadedLevelName;
         clevel = int.Parse(levelname.Substring(5, levelname.Length - 5));
+        
         SceneManager.LoadScene("level" + (clevel + 1));
         MonoBehaviour.print("HandleInterstitialClosed event received");
     }

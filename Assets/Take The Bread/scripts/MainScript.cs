@@ -71,7 +71,9 @@ public class MainScript : MonoBehaviour {
             clevel = int.Parse(levelname.Substring(5, levelname.Length - 5));
         }
 				
-				GameData.getInstance ().cLevel = clevel;
+				GameData.getInstance ().cLevel = GameData.getInstance().levelPassed;
+
+				clevel=GameData.getInstance ().cLevel;
 
 				//txtLevel.text = Localization.Instance.GetString ("levelname" + clevel);
         txtLevel.text = "level" + clevel;
